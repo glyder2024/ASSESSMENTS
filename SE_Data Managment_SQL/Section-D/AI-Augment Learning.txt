@@ -1,0 +1,45 @@
+USE food_delivery_capstone;
+
+DELIMITER //
+
+CREATE PROCEDURE restaurant_monthly_summary(
+    IN p_restaurant_id INT,
+    IN p_month INT
+)
+BEGIN
+    DECLARE order_count INT DEFAULT 0;
+
+    IF p_month < 1 OR p_month > 12 THEN
+        SELECT 'Invalid month. Please enter a month between 1 and 12.' AS message;
+    ELSE
+
+        SELECT COUNT(*)
+        INTO order_count
+        FROM orders
+        WHERE restaurant_id = p_restaurant_id
+        AND MONTH(order_date) = p_month;
+
+        IF order_count = 0 THEN
+            SELECT 'No orders found for this restaurant in the selected month.' AS message;
+        ELSE
+            SELECT
+                restaurant_id,
+                COUNT(order_id) AS total_orders,
+                SUM(total_amount) AS total_revenue,
+                AVG(total_amount) AS average_order_value
+            FROM orders
+            WHERE restaurant_id = p_restaurant_id
+            AND MONTH(order_date) = p_month
+            GROUP BY restaurant_id;
+        END IF;
+
+    END IF;
+END //
+
+DELIMITER ;
+
+CALL restaurant_monthly_summary(1, 9);
+
+CALL restaurant_monthly_summary(2, 9);
+
+CALL restaurant_monthly_summary(1, 8);

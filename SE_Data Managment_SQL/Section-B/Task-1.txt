@@ -1,0 +1,33 @@
+CREATE DATABASE foodapp_db;
+
+use foodapp_db;
+
+SELECT * FROM restaurants;
+
+CREATE TABLE  restaurants(
+restaurant_id INT AUTO_INCREMENT PRIMARY KEY,
+name varchar(100) not null,
+city varchar(100),
+cuisine_type varchar(100),
+rating DECIMAL(3,1)
+);
+
+INSERT INTO restaurants(name,city,cuisine_type,rating)
+values 
+('Spice Garden', 'Ahmedabad', 'Indian', 4.5),
+('Food Palace', 'Ahmedabad', 'Gujarati', 4.2),
+('Urban Bites', 'Rajkot', 'Fast Food', 4.0),
+('Royal Dine', 'Surat', 'Chinese', 4.7),
+('Tasty Hub', 'Vadodara', 'Italian', 4.3),
+('Green Leaf', 'Mumbai', 'South Indian', 4.1);
+
+UPDATE restaurants
+set rating = 4
+WHERE restaurant_id = 3;
+
+DELETE FROM restaurants
+WHERE restaurant_id = 6;
+
+SELECT *
+FROM restaurants
+ORDER BY rating DESC;
